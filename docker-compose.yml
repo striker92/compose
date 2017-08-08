@@ -1,0 +1,25 @@
+version: '2'
+services:
+  mysql:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: pass
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    links:
+      - mysql
+    ports:
+      - '8081:80'
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+  php:
+    build: ./php
+    ports:
+      - '80:80'
+    volumes:
+      - ./html:/var/www/html
+    depends_on:
+      - mysql
+volumes:
+  db:
